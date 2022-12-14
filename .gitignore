@@ -1,0 +1,31 @@
+# IDE specific
+.idea/
+.vscode/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.sqlite3
+env/
+venv/
+.venv/
+
+### Project specific ###
+settings_local.py
+
+### OS specific ###
+.DS_Store
+/1.2-requests-templates/
+/2.1-databases/
+/2.2-databases-2/
+/3.1-drf-intro/
+/3.2-crud/
+/3.3-permissions/
+/3.4-django-testing/
+/venv/
+/.gitignore
+/HOW_TO_WORK.md
+/README.md
+/1.2-requests-templates/
