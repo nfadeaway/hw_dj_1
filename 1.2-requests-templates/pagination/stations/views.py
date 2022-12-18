@@ -11,6 +11,7 @@ with open(settings.BUS_STATION_CSV, newline='', encoding='utf-8') as data_file:
     file_rows = csv.DictReader(data_file)
     for row in file_rows:
         bus_station_list.append(row)
+
 def index(request):
     return redirect(reverse('bus_stations'))
 
