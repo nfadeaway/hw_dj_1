@@ -30,7 +30,6 @@ def books_on_date_view(request, dt):
 
     context = {
         'books': Book.objects.filter(pub_date=dt),
-        'all_pub_dates': all_pub_dates,
         'pagi_dict': pagi_dict
     }
     return render(request, template, context)
