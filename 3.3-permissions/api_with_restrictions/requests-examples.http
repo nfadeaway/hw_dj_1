@@ -1,0 +1,90 @@
+# примеры API-запросов
+
+@baseUrl = http://localhost:8000/api
+
+# получение объявлений - драфты видны только для автора
+GET {{baseUrl}}/advertisements/
+Content-Type: application/json
+# admin1
+# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+# admin2
+# Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+
+###
+
+# создание объявления, разрешено только с авторизацией
+POST {{baseUrl}}/advertisements/
+Content-Type: application/json
+# Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+
+{
+  "title": "Обхявление админа2",
+  "description": "Срочно",
+  "status": "DRAFT"
+}
+
+###
+
+# попытка поменять объявление, разрешено только автору
+PATCH {{baseUrl}}/advertisements/33/
+Content-Type: application/json
+# admin1
+# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+# admin2
+Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+
+{
+  "status": "CLOSED"
+}
+
+###
+
+# удаление, разрешено только автору
+DELETE {{baseUrl}}/advertisements/33/
+Content-Type: application/json
+# admin1
+# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+# admin2
+Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+
+###
+
+# добавить в избранное, разрешено только с авторизацией и если не своё
+POST {{baseUrl}}/advertisements/33/addtofavorites/
+Content-Type: application/json
+# admin1
+# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+# admin2
+Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+
+###
+
+# показать моё избранное, работает только с авторизацией
+GET {{baseUrl}}/advertisements/showmyfavorites/
+Content-Type: application/json
+# admin1
+Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+# admin2
+# Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+
+###
+
+# фильтрация по создателю, без авторизации драфты не видны
+GET {{baseUrl}}/advertisements/?creator=1
+Content-Type: application/json
+# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+
+###
+
+# фильтрация по дате, без авторизации драфты не видны
+GET {{baseUrl}}/advertisements/?created_at_before=2023-01-27
+Content-Type: application/json
+# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+
+###
+
+# фильтрация по тайтлу, без авторизации драфты не видны
+GET {{baseUrl}}/advertisements/?status=DRAFT
+Content-Type: application/json
+# admin1
+Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
