@@ -43,24 +43,24 @@ Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
 DELETE {{baseUrl}}/advertisements/33/
 Content-Type: application/json
 # admin1
-# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
 # admin2
-Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+# Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
 
 ###
 
 # добавить в избранное, разрешено только с авторизацией и если не своё
-POST {{baseUrl}}/advertisements/33/addtofavorites/
+POST {{baseUrl}}/advertisements/39/addfav/
 Content-Type: application/json
 # admin1
-# Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
+Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
 # admin2
-Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
+# Authorization: Token 8f91f0cb8e1a1bada5434adae1fd418202e7f198
 
 ###
 
 # показать моё избранное, работает только с авторизацией
-GET {{baseUrl}}/advertisements/showmyfavorites/
+GET {{baseUrl}}/advertisements/showfavs/
 Content-Type: application/json
 # admin1
 Authorization: Token 00ec72ba347ad10cb70b28523906ada71b0d907f
