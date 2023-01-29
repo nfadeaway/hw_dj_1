@@ -43,6 +43,7 @@ class AdvertisementViewSet(ModelViewSet):
             return Response('Вы не можете добавить собственное объявление в Избранное')
         else:
             Fav.objects.create(advertisement_id=obj.id, user_id=request.user.id, is_fav=True)
+
         return Response(f'Объявление {obj.id} добавлено в Избранное!')
 
     # Просмотр избранного
@@ -50,10 +51,7 @@ class AdvertisementViewSet(ModelViewSet):
     def showfavs(self, request):
         if request.user.id is None:
             return Response('Вы не авторизованы')
-        favorites_list = []
-        user_favorites = Fav.objects.filter(user_id=request.user.id, is_fav=True)
-        for favorite in user_favorites:
-            favorites_list.append(favorite.advertisement_id)
-        result_queryset = Advertisement.objects.filter(id__in=favorites_list)
+        result_queryset = Advertisement.objects.filter(favs__user_id=request.user.id, favs__is_fav=True)
         serializer = AdvertisementSerializer(result_queryset, many=True)
+
         return Response(serializer.data)
