@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from advertisements.models import Advertisement, FavoriteAdv
+from advertisements.models import Advertisement, Fav
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -45,3 +45,18 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('У вас уже 10 открытых объявлений!')
 
         return data
+
+
+class FavSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fav
+        fields = ['advertisement_id', 'is_fav']
+
+
+class ShowFavSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    favorites = FavSerializer(many=True)
+
+    class Meta:
+        model = Advertisement
+        fields = ['user', 'favorites']

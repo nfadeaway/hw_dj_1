@@ -1,9 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.authtoken.admin import User
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from .models import Advertisement, FavoriteAdv
+from .models import Advertisement, Fav
 from .serializers import AdvertisementSerializer
 from .filters import AdvertisementFilter
 from .permissions import IsOwnerOrReadOnly
@@ -30,31 +31,29 @@ class AdvertisementViewSet(ModelViewSet):
 
     # Добавляем в объявление в избранное
     @action(detail=True, methods=['POST'])
-    def addtofavorites(self, request, pk=None):
+    def addfav(self, request, pk=None):
         obj = self.get_object()
         if request.user.id is None:
             return Response('Вы не авторизованы')
-        favorites = FavoriteAdv.objects.filter(user_id=request.user.id, favorite_adv=obj.id)
+        favorites = Fav.objects.filter(advertisement_id=obj.id, user_id=request.user.id)
         if favorites:
             return Response('Объявление уже в избранном')
         adv = Advertisement.objects.filter(id=obj.id)
         if request.user.id == adv[0].creator_id:
             return Response('Вы не можете добавить собственное объявление в Избранное')
         else:
-            FavoriteAdv.objects.create(favorite_adv=obj.id, user_id=request.user.id)
-
+            Fav.objects.create(advertisement_id=obj.id, user_id=request.user.id, is_fav=True)
         return Response(f'Объявление {obj.id} добавлено в Избранное!')
 
-    # Выводим список избранного
+    # Просмотр избранного
     @action(detail=False, methods=['GET'])
-    def showmyfavorites(self, request):
+    def showfavs(self, request):
         if request.user.id is None:
             return Response('Вы не авторизованы')
         favorites_list = []
-        user_favorites = FavoriteAdv.objects.filter(user_id=request.user.id)
+        user_favorites = Fav.objects.filter(user_id=request.user.id, is_fav=True)
         for favorite in user_favorites:
-            favorites_list.append(favorite.favorite_adv)
-        print(favorites_list)
+            favorites_list.append(favorite.advertisement_id)
         result_queryset = Advertisement.objects.filter(id__in=favorites_list)
         serializer = AdvertisementSerializer(result_queryset, many=True)
         return Response(serializer.data)

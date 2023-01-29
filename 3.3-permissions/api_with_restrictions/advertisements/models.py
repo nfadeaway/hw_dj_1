@@ -31,10 +31,7 @@ class Advertisement(models.Model):
     )
 
 
-class FavoriteAdv(models.Model):
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='favorites'
-    )
-    favorite_adv = models.IntegerField()
+class Fav(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favs')
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='favs')
+    is_fav = models.BooleanField(default=False)
